@@ -1,0 +1,48 @@
+header{
+    height: 7vh;
+}
+section{
+    height: 93vh;
+}
+.nopadding{
+    padding: 0;
+}
+.h-10{
+    height: 10%;
+}
+.h-90{
+    height: 90%;
+}
+.w-40{
+    width: 40%;
+}
+.ml-5{
+    margin-left: 5%;
+}
+.mr-10{
+    margin-right: 10%;
+}
+.ml-25{
+    margin-left: 25%;
+}
+.ml-50{
+    margin-left: 50%;
+}
+a{
+    cursor: pointer;
+}
+a:link{
+    text-decoration: none;
+}
+
+input{
+    width: 50%;
+}
+label{
+    width: 40%;
+}
+
+.formulaire{
+    display: flex;
+    flex-direction: row;
+}

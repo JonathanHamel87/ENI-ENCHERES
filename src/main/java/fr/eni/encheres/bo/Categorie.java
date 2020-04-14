@@ -9,10 +9,10 @@ public class Categorie implements Serializable {
     ////////////////////////////// ATTRIBUTES //////////////////////////////
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "no_categorie")
+    @Column(name = "no_categorie", nullable = false)
     private Integer noCategorie;
 
-    @Column(name = "libelle")
+    @Column(name = "libelle", nullable = false)
     private String libelle;
 
     ////////////////////////////// CONSTRUCTORS //////////////////////////////
