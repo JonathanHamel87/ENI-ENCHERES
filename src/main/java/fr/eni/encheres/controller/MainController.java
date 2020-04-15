@@ -1,5 +1,6 @@
 package fr.eni.encheres.controller;
 
+import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,28 @@ public class MainController {
     public String formulaireInscription(Model model, HttpSession session){
         session.setAttribute("title", "inscription");
         session.getAttribute("userActif");
-        System.out.println(session.getAttribute("userActif"));
         return "inscription";
     }
 
     @GetMapping(value = "/connexion")
     public String formulaireConnexion(Model model, HttpSession session){
         session.setAttribute("title", "connexion");
+        session.setAttribute("messageError", "");
         return "connexion";
+    }
+
+    @GetMapping(value = "/deconnexion")
+    public String deconnexion(HttpSession session, Model model){
+        session.setAttribute("userActif", null);
+        return accueil(model, session);
+    }
+
+    @GetMapping(value = "/profil")
+    public String profil(HttpSession session, Model model){
+        session.setAttribute("title", "profil");
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("userActif");
+        model.addAttribute("user", utilisateur);
+        return "profil";
     }
 
 

@@ -6,9 +6,9 @@
   Version: 1.1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="commons/header.jsp"%>
 <section class="d-flex flex-column">
-   ${sessionScope.userActif}
    <h2 class="w-100 text-center">Mon profil</h2>
    <form class="d-flex w-100 flex-wrap" method="post" action="/inscription/">
       <div class="d-flex flex-row w-100">

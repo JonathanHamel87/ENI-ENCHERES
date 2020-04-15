@@ -6,16 +6,17 @@
   Version: 1.1
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="commons/header.jsp"%>
 <section class="ml-25 w-50">
-   <form method="get" action="">
+   <form method="get" action="/connexion/">
       <div>
          <label for="identifiant">Identifiant :</label>
          <input name="identifiant" id="identifiant" required />
       </div>
       <div>
          <label for="password">Mot de passe :</label>
-         <input name="password" id="password" required />
+         <input name="password" id="password" type="password" required />
       </div>
       <div>
          <button class="btn btn-primary" type="submit">Connexion</button>
@@ -27,6 +28,7 @@
       </div>
    </form>
    <button>Créer un compte</button>
+   ${sessionScope.messageError}
 </section>
 
 </body>
