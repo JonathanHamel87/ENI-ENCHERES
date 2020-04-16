@@ -27,17 +27,17 @@
             <ul class="w-100 h-100 d-flex flex-row justify-content-end list-group">
                 <!-- Menu non connecté -->
                 <c:if test="${sessionScope.userActif == null}">
-                    <li class="list-group-item"><a href="/inscription">s'inscrire</a></li>
-                    <li class="list-group-item border-0 border-bottom"><a href="/connexion">se connecter</a></li>
+                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/inscription">s'inscrire</a></li>
+                    <li class="list-group-item border-0 border-bottom"><a href="${pageContext.request.contextPath}/connexion">se connecter</a></li>
                 </c:if>
 
 
                 <!-- Menu connecté -->
                 <c:if test="${sessionScope.userActif != null}">
-                    <li class="list-group-item"><a href="/encheres">Enchères</a></li>
-                    <li class="list-group-item"><a href="/venteArticle">Vendre un article</a></li>
-                    <li class="list-group-item"><a href="/profil">Mon profil</a></li>
-                    <li class="list-group-item border-0 border-bottom"><a href="/deconnexion">déconnexion</a></li>
+                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/encheres">Enchères</a></li>
+                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/vendreArticle">Vendre un article</a></li>
+                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/profil">Mon profil</a></li>
+                    <li class="list-group-item border-0 border-bottom"><a href="${pageContext.request.contextPath}/deconnexion">déconnexion</a></li>
                 </c:if>
             </ul>
         </nav>

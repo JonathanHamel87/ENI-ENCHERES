@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
        type : 'GET',
-       url : '/profil/',
+       url : 'profil/',
        success : function (result) {
             $('#profil').html(result);
        }
@@ -12,7 +12,7 @@ $(document).ready(function () {
 function updateProfil(){
     $.ajax({
         type : 'GET',
-        url : '/profil/modification',
+        url : 'profil/modification',
         success : function (result) {
             $('#profil').html(result);
         }
@@ -42,7 +42,7 @@ function saveProfil(){
     console.log("Data = "+data);
     $.ajax({
         type : 'POST',
-        url : '/profil/update',
+        url : 'profil/update',
         data : data,
         success : function (result) {
             $('#profil').html(result);
@@ -56,7 +56,7 @@ function deleteProfil(){
 
     $.ajax({
        type : 'GET',
-       url : '/profil/delete',
+       url : 'profil/delete',
        success : function (result) {
             //$('#profil').html(result);
            window.location.replace("/");

@@ -1,6 +1,7 @@
 package fr.eni.encheres.controller;
 
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.ArticleVenduDAO;
 import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -24,10 +22,13 @@ public class MainController {
     CategorieDAO categorieDAO;
     @Autowired
     UtilisateurDAO utilisateurDAO;
+    @Autowired
+    ArticleVenduDAO articleVenduDAO;
 
     @GetMapping(value = "/")
     public String accueil(Model model, HttpSession session){
         model.addAttribute("categories", categorieDAO.findAll());
+        model.addAttribute("encheres", articleVenduDAO.findAll());
         session.setAttribute("title", "accueil");
         model.addAttribute("userActif", utilisateurDAO.findByPseudo(getLoggerInUserName()));
         return "home";
@@ -64,6 +65,22 @@ public class MainController {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("userActif");
         model.addAttribute("user", utilisateur);
         return "profil";
+    }
+
+    @GetMapping(value = "/consultationProfil")
+    public String consultationProfil(HttpSession session, Model model, @RequestParam Integer noUtilisateur){
+        session.setAttribute("title", "profil");
+        Utilisateur utilisateur = utilisateurDAO.findById(noUtilisateur).get();
+        model.addAttribute("user", utilisateur);
+        return "consultationProfil";
+    }
+
+    @GetMapping(value = "/vendreArticle")
+    public String vendreArticle(HttpSession session, Model model){
+        model.addAttribute("categories", categorieDAO.findAll());
+        Utilisateur user = (Utilisateur) session.getAttribute("userActif");
+        model.addAttribute("user", user);
+        return "vendreArticle";
     }
 
 

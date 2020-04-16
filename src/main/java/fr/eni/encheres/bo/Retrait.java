@@ -1,5 +1,8 @@
 package fr.eni.encheres.bo;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -8,6 +11,10 @@ import java.io.Serializable;
 public class Retrait implements Serializable {
     ////////////////////////////// ATTRIBUTES //////////////////////////////
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_retrait")
+    private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "no_article", foreignKey = @ForeignKey(name = "FK_retraits_articlesVendus"), referencedColumnName = "no_article", nullable = false)
     private ArticleVendu noArticle;
@@ -25,6 +32,14 @@ public class Retrait implements Serializable {
     public Retrait(){}
 
     ////////////////////////////// GETTERS AND SETTERS //////////////////////////////
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public ArticleVendu getNoArticle() {
         return noArticle;
     }
@@ -61,7 +76,8 @@ public class Retrait implements Serializable {
     @Override
     public String toString() {
         return "Retrait{" +
-                "noArticle=" + noArticle +
+                "id=" + id +
+                ", noArticle=" + noArticle +
                 ", rue='" + rue + '\'' +
                 ", codePostal='" + codePostal + '\'' +
                 ", ville='" + ville + '\'' +

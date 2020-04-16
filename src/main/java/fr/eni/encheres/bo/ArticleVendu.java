@@ -2,9 +2,10 @@ package fr.eni.encheres.bo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
+@Embeddable
 @Table(name = "ARTICLES_VENDUS")
 public class ArticleVendu implements Serializable {
     ////////////////////////////// ATTRIBUTES //////////////////////////////

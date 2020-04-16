@@ -28,7 +28,7 @@ public class ConnexionController {
         List<Utilisateur> utilisateurs = utilisateurDAO.findAll();
 
         for (Utilisateur utilisateur : utilisateurs){
-            if (utilisateur.getPseudo().equals(pseudo) && utilisateur.getMotDePasse().equals(password)){
+            if ((utilisateur.getPseudo().equals(pseudo) || utilisateur.getEmail().equals(pseudo)) && utilisateur.getMotDePasse().equals(password)){
                 session.setAttribute("userActif", utilisateur);
                 bUtilisateurExist = true;
             }
@@ -39,6 +39,5 @@ public class ConnexionController {
         }else{
             return "redirect:/";
         }
-
     }
 }
