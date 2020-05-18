@@ -17,33 +17,24 @@
         <!-- Filtre -->
         <div class="w-50">
             <label class="w-100">Filtres :</label>
-            <input class="w-100 mb-2" type="search"/>
+            <input class="w-100 mb-2" type="search" id="saisie"/>
 
             <label class="w-25">Catégorie :</label>
-            <select class="w-50">
-                <option>Toutes</option>
+            <select class="w-50" id="categorie">
+                <option id="0">Toutes</option>
                 <c:forEach items="${categories}" var="categorie">
                     <option id="${categorie.noCategorie}">${categorie.libelle}</option>
                 </c:forEach>
             </select>
         </div>
         <!-- Bouton rechercher -->
-        <button class="btn btn-primary w-30 ml-10">Rechercher</button>
+        <button class="btn btn-primary w-30 ml-10" id="btn-search">Rechercher</button>
 
     </div>
 
     <!-- Afficxhage liste -->
-    <div class="w-100 mt-4" id="liste-encheres">
-        <c:forEach items="${encheres}" var="enchere">
-            <div class="w-40 border-dark">
-                <h5>${enchere.nomArticle}</h5>
-                <p>Prix : ${enchere.prixInitial}</p>
-                <p>Fin de l'enchère : ${enchere.dateFinEncheres}</p>
-                <p>Vendeur : <a href="${pageContext.request.contextPath}/consultationProfil?noUtilisateur=${enchere.noUtilisateur.noUtilisateur}">${enchere.noUtilisateur.pseudo}</a></p>
-            </div>
-        </c:forEach>
-    </div>
+    <div class="w-100 mt-4 d-flex flex-row flex-wrap" id="liste-encheres"></div>
 </section>
-
+<script src="js/search.js"></script>
 </body>
 </html>

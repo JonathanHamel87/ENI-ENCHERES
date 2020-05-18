@@ -129,6 +129,6 @@ public class ArticleVendu implements Serializable {
                 ", prixVente=" + prixVente +
                 ", noUtilisateur=" + noUtilisateur +
                 ", noCategorie=" + noCategorie +
-                '}';
+                '}'+'\n';
     }
 }

@@ -5,14 +5,13 @@ import fr.eni.encheres.dal.ArticleVenduDAO;
 import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.UtilisateurDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -28,7 +27,6 @@ public class MainController {
     @GetMapping(value = "/")
     public String accueil(Model model, HttpSession session){
         model.addAttribute("categories", categorieDAO.findAll());
-        model.addAttribute("encheres", articleVenduDAO.findAll());
         session.setAttribute("title", "accueil");
         model.addAttribute("userActif", utilisateurDAO.findByPseudo(getLoggerInUserName()));
         return "home";
@@ -83,6 +81,28 @@ public class MainController {
         return "vendreArticle";
     }
 
+    @GetMapping(value = "/search")
+    public String searchResult(Model model, HttpSession session){
+        model.addAttribute("articles", articleVenduDAO.findAll());
+        return "search/listeEnchere";
+    }
+
+    @GetMapping(value = "/searchFiltre")
+    public String searchResultFiltre(Model model, HttpSession session,@RequestParam String categorie, @RequestParam String nomArticle){
+        System.out.println("Categorie = "+categorie);
+        System.out.println("Nom article = "+nomArticle);
+        if (categorie.equals("Toutes")){
+            model.addAttribute("articles", articleVenduDAO.findSearch(nomArticle));
+        }else{
+            model.addAttribute("articles", articleVenduDAO.findMultiCritere(categorie, nomArticle));
+        }
+        //String vue = accueil(model, session);
+        //return vue;
+        System.out.println(articleVenduDAO.findSearch(nomArticle));
+        /*return "search/listeEnchereFiltre";
+         */
+        return "search/listeEnchere";
+    }
 
 
     /*======================================== FONCTIONS  ========================================*/
