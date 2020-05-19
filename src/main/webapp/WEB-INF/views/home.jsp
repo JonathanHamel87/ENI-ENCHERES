@@ -9,6 +9,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="commons/header.jsp"%>
 <section class="ml-5 h-95 w-90 d-flex flex-column">
+    <input id="userActif" type="text" value="${userActif}" hidden />
     <!-- Titre -->
     <h3 class="text-center">Liste des enchères</h3>
 
@@ -31,7 +32,8 @@
         <button class="btn btn-primary w-30 ml-10" id="btn-search">Rechercher</button>
 
     </div>
-
+    <!-- Affichage menu encheres -->
+    <div class="w-50 mt-4 d-flex flex-row flex-wrap nopadding ml-0" id="panel-enchere"></div>
     <!-- Afficxhage liste -->
     <div class="w-100 mt-4 d-flex flex-row flex-wrap" id="liste-encheres"></div>
 </section>

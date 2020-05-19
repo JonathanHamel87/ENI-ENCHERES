@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 @SessionAttributes("userActif")
@@ -88,20 +89,81 @@ public class MainController {
     }
 
     @GetMapping(value = "/searchFiltre")
-    public String searchResultFiltre(Model model, HttpSession session,@RequestParam String categorie, @RequestParam String nomArticle){
-        System.out.println("Categorie = "+categorie);
-        System.out.println("Nom article = "+nomArticle);
-        if (categorie.equals("Toutes")){
-            model.addAttribute("articles", articleVenduDAO.findSearch(nomArticle));
+    public String searchResultFiltre(Model model, HttpSession session,
+                                     @RequestParam String categorie,
+                                     @RequestParam String nomArticle,
+                                     @RequestParam Boolean bEncheres,
+                                     @RequestParam Boolean bVentes,
+                                     @RequestParam Boolean bVenteEnCours,
+                                     @RequestParam Boolean bVenteNonDebutee,
+                                     @RequestParam Boolean bVenteTerminee,
+                                     @RequestParam Boolean bEnchereOuverte,
+                                     @RequestParam Boolean bEnchereEnCours,
+                                     @RequestParam Boolean bEnchereRemportee){
+        /* Utilisateur non connecté */
+        Utilisateur userActif = (Utilisateur) session.getAttribute("userActif");
+        if (userActif == null){
+            if (categorie.equals("Toutes")){
+                model.addAttribute("articles", articleVenduDAO.findSearch(nomArticle));
+            }else{
+                model.addAttribute("articles", articleVenduDAO.findMultiCritere(categorie, nomArticle));
+            }
         }else{
-            model.addAttribute("articles", articleVenduDAO.findMultiCritere(categorie, nomArticle));
+            // Encheres
+            if (bEncheres){
+                // En cours
+                if (bEnchereEnCours){
+                    if (categorie.equals("Toutes")){
+                        model.addAttribute("articles", articleVenduDAO.findByEnchereEnCours(nomArticle, userActif.getNoUtilisateur()));
+                    }
+                }
+                // Ouverte
+                else if (bEnchereOuverte){
+
+                }
+                // Remportee
+                else if (bEnchereRemportee){
+
+                }
+            }
+            // Ventes
+            else if (bVentes){
+                Date now = new Date();
+                // Vente en cours
+                if (bVenteEnCours){
+                    if (categorie.equals("Toutes")){
+                        model.addAttribute("articles", articleVenduDAO.findByVenteEnCours(nomArticle, userActif.getNoUtilisateur()));
+                    }else{
+                        model.addAttribute("articles", articleVenduDAO.findByVenteEnCoursWithCategorie(nomArticle, userActif.getNoUtilisateur(), categorie));
+                    }
+                }
+                // Vente non débutée
+                else if (bVenteNonDebutee){
+                    if (categorie.equals("Toutes")){
+                        model.addAttribute("articles", articleVenduDAO.findByVenteNonDebutee(nomArticle, userActif.getNoUtilisateur(), now));
+                    }else{
+                        model.addAttribute("articles", articleVenduDAO.findByVenteNonDebuteeWithCategorie(nomArticle, userActif.getNoUtilisateur(), now, categorie));
+                    }
+                }
+                // Vente Terminée
+                else if (bVenteTerminee){
+                    if (categorie.equals("Toutes")){
+                        model.addAttribute("articles", articleVenduDAO.findByVenteTerminee(nomArticle, userActif.getNoUtilisateur(), now));
+                    }else{
+                        model.addAttribute("articles", articleVenduDAO.findByVenteTermineeWithCategorie(nomArticle, userActif.getNoUtilisateur(), now, categorie));
+                    }
+                }
+            }
         }
-        //String vue = accueil(model, session);
-        //return vue;
-        System.out.println(articleVenduDAO.findSearch(nomArticle));
-        /*return "search/listeEnchereFiltre";
-         */
+
         return "search/listeEnchere";
+    }
+
+    /* Affichage panel user connecté */
+    @GetMapping(value = "/panelUser")
+    public String panelUser(Model model, HttpSession session){
+        model.addAttribute("userActif", session.getAttribute("userActif"));
+        return "search/enchereConnectee";
     }
 
 
