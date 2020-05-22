@@ -22,7 +22,7 @@
 </head>
 <body>
     <header class="card nopadding w-100 d-flex flex-row justify-content-between">
-        <h3 class="w-25 h-100 d-flex justify-content-center align-items-center">ENI-Enchères</h3>
+        <h3 class="w-25 h-100 d-flex justify-content-center align-items-center" id="logo"><a href="${pageContext.request.contextPath}/">ENI-Enchères</a></h3>
         <nav class="w-75 h-100 d-flex flex-row">
             <ul class="w-100 h-100 d-flex flex-row justify-content-end list-group">
                 <!-- Menu non connecté -->

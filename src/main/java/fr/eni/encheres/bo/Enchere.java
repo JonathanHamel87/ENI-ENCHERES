@@ -2,18 +2,21 @@ package fr.eni.encheres.bo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "ENCHERES")
 public class Enchere implements Serializable {
     ////////////////////////////// ATTRIBUTES //////////////////////////////
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_enchere")
+    private Integer idEnchere;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "no_utilisateur", foreignKey = @ForeignKey(name = "FK_encheres_utilisateurs"), referencedColumnName = "no_utilisateur", nullable = false)
     private Utilisateur noUtilisateur;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "no_article", foreignKey = @ForeignKey(name = "FK_encheres_articlesVendus"), referencedColumnName = "no_article", nullable = false)
     private ArticleVendu noArticle;
@@ -28,6 +31,14 @@ public class Enchere implements Serializable {
     public Enchere(){}
 
     ////////////////////////////// GETTERS AND SETTERS //////////////////////////////
+    public Integer getIdEnchere() {
+        return idEnchere;
+    }
+
+    public void setIdEnchere(Integer idEnchere) {
+        this.idEnchere = idEnchere;
+    }
+
     public Utilisateur getNoUtilisateur() {
         return noUtilisateur;
     }
@@ -65,7 +76,8 @@ public class Enchere implements Serializable {
     @Override
     public String toString() {
         return "Enchere{" +
-                "noUtilisateur=" + noUtilisateur +
+                "idEnchere=" + idEnchere +
+                ", noUtilisateur=" + noUtilisateur +
                 ", noArticle=" + noArticle +
                 ", dateEnchere=" + dateEnchere +
                 ", montantEnchere=" + montantEnchere +

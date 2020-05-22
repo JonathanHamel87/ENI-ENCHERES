@@ -7,11 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<input type="text" class="url" id="${pageContext.request.contextPath}/" hidden />
 <c:forEach items="${articles}" var="article">
-    <div class="w-40 border border-dark">
+    <div class="w-40 border border-dark details-article" id="${article.noArticle}">
         <h5>${article.nomArticle}</h5>
         <p>Prix : ${article.prixInitial}</p>
         <p>Fin de l'enchère : ${article.dateFinEncheres}</p>
         <p>Vendeur : <a href="${pageContext.request.contextPath}/consultationProfil?noUtilisateur=${article.noUtilisateur.noUtilisateur}">${article.noUtilisateur.pseudo}</a></p>
     </div>
 </c:forEach>
+<script src="js/detailsArticle.js"></script>

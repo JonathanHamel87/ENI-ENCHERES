@@ -1,9 +1,10 @@
 package fr.eni.encheres.controller;
 
+import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.dal.ArticleVenduDAO;
-import fr.eni.encheres.dal.CategorieDAO;
-import fr.eni.encheres.dal.UtilisateurDAO;
+import fr.eni.encheres.dal.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 @Controller
 @SessionAttributes("userActif")
@@ -24,6 +28,10 @@ public class MainController {
     UtilisateurDAO utilisateurDAO;
     @Autowired
     ArticleVenduDAO articleVenduDAO;
+    @Autowired
+    RetraitDAO retraitDAO;
+    @Autowired
+    EnchereDAO enchereDAO;
 
     @GetMapping(value = "/")
     public String accueil(Model model, HttpSession session){
@@ -159,11 +167,59 @@ public class MainController {
         return "search/listeEnchere";
     }
 
+    /* Affichage details article */
+    @GetMapping(value = "/detailsArticle")
+    public String afficherDetailsArticle(Model model, HttpSession session, @RequestParam Integer id){
+        ArticleVendu article = articleVenduDAO.findById(id).get();
+        Retrait retrait = retraitDAO.findByIdArticle(article.getNoArticle());
+        Utilisateur vendeur = article.getNoUtilisateur();
+        Enchere enchere = enchereDAO.findByNoArticle(id);
+        Utilisateur acheteur = (Utilisateur) session.getAttribute("userActif");
+
+        model.addAttribute("article", article);
+        model.addAttribute("retrait", retrait);
+        model.addAttribute("acheteur", acheteur);
+        model.addAttribute("vendeur", vendeur);
+        model.addAttribute("enchere",enchere);
+        return "/detailsArticle";
+    }
+
     /* Affichage panel user connecté */
     @GetMapping(value = "/panelUser")
     public String panelUser(Model model, HttpSession session){
         model.addAttribute("userActif", session.getAttribute("userActif"));
         return "search/enchereConnectee";
+    }
+
+    /* Ajout d'une enchere */
+    @PostMapping(value = "/addEnchere")
+    public String ajoutEnchere(Model model, HttpSession session, @RequestParam Integer acheteur, @RequestParam Integer article, @RequestParam Integer proposition){
+        Utilisateur acquereur = utilisateurDAO.findById(acheteur).get();
+        ArticleVendu articleEnVente = articleVenduDAO.findById(article).get();
+        Enchere enchere = new Enchere();
+        Calendar cal = GregorianCalendar.getInstance();
+        Date now = new Date();
+        List<Enchere> encheres = enchereDAO.findAll();
+        Boolean exist = false;
+
+        for (Enchere test : encheres){
+            if (test.getNoArticle().getNoArticle() == article){
+                exist = true;
+            }
+        }
+        if (exist){
+            enchere = enchereDAO.findByNoArticle(article);
+        }
+
+        enchere.setNoArticle(articleEnVente);
+        enchere.setMontantEnchere(proposition);
+        enchere.setNoUtilisateur(acquereur);
+        enchere.setDateEnchere(now);
+
+        enchereDAO.save(enchere);
+
+        String vue = accueil(model, session);
+        return vue;
     }
 
 
